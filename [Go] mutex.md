@@ -32,6 +32,7 @@ Lock 对申请锁的情况分为三种：
 - 有冲突，且已经过了自旋阶段，通过调用 semrelease 让 goroutine 进入等待状态
 > 摘自 https://golang.design/under-the-hood/zh-cn/part4lib/ch15sync/mutex/
 
+> goroutine会自旋四次,如果失败,就在信号量上阻塞睡眠
 
 ### FSM
 - 进入饥饿模式

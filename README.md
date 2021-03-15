@@ -8,10 +8,11 @@ https://www.zhihu.com/column/c_1234535335494545408
 ```go
 ./README.md
 ./[alg] sort.md
+./[arch] design pattern.md
 ./[cache] base concepts.md
 ./[DB] b-tree.md
 ./[DB] rule.md
-./[DB] sql spec
+./[DB] sql spec.md
 ./[deploy] server deploy.md
 ./[Go] concurrentMap.md
 ./[Go] escape analysis.md
@@ -26,6 +27,7 @@ https://www.zhihu.com/column/c_1234535335494545408
 ./[Go] user thread.md
 ./[HTTP] Content-Type.md
 ./[linux] bg run linux.md
+./[lock-free] atomic.md
 ./[other] everyDay.md
 ./[other] ready for面试.md
 ./[rpc] rpcx.md
@@ -40,3 +42,14 @@ https://www.zhihu.com/column/c_1234535335494545408
 - [ ] [Go] TCP zinx框架
 - [ ] [Go] 协程池 ants框架
 - [x] [Go] mutex 普通模式,饥饿模式
+- [ ] [arch] 设计模式(未完成)
+
+## Recommend
+
+```go
+./[cache] base concepts.md
+./[Go] concurrentMap.md
+./[Go] standard package layout.md
+./[rpc] rpcx.md
+./[lock-free] atomic.md
+```
