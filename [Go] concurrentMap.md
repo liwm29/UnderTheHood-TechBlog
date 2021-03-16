@@ -84,7 +84,7 @@ func (m *orderedMap(T1,T2))Iter() func()(T1,T2){
 
 ## Map with mutex
 
-很显然,性能将不再是一个需要多么谈及的话题.mutex将会导致go程阻塞而不被调度出运行队列
+很显然,性能将不再是一个需要多么谈及的话题.mutex将会导致go程阻塞而被调度出运行队列
 
 ```go
 type concurrentMap(type T1,T2) struct{

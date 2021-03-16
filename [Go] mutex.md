@@ -28,11 +28,11 @@ wait(m.sema)
 ### 加锁
 Lock 对申请锁的情况分为三种：
 - 无冲突，通过 CAS 操作把当前状态设置为加锁状态
-- 有冲突，开始自旋，并等待锁释放，如果其他 goroutine 在这段时间内释放该锁，直接获得该锁；如果没有释放则为下一种情况
+- 有冲突，开始自旋轮询，并等待锁释放，如果其他 goroutine 在这段时间内释放该锁，直接获得该锁；如果没有释放则为下一种情况
 - 有冲突，且已经过了自旋阶段，通过调用 semrelease 让 goroutine 进入等待状态
 > 摘自 https://golang.design/under-the-hood/zh-cn/part4lib/ch15sync/mutex/
 
-> goroutine会自旋四次,如果失败,就在信号量上阻塞睡眠
+> goroutine会自旋轮询四次,如果失败,就在信号量上阻塞睡眠
 
 ### FSM
 - 进入饥饿模式

@@ -40,3 +40,4 @@ c.SaveUploadedFile(file, dst)
 form, _ := c.MultipartForm()
 files := form.File["upload[]"]
 
+```

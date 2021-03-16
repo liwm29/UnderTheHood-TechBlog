@@ -79,7 +79,7 @@ s := v.Addr().Interface()
 
 一般来说,使用时,比如将其返回,要转换成Interface{}
 
-标准库的做法,访问字段需要按index,我们可以自己包装一层,然后加上Interface(),Addr()两个方法
+为了方便的用string访问字段,而不是index,我们可以自己包装一层,然后加上Interface(),Addr()两个方法
 
 ```go
 type myStruct struct {

@@ -6,7 +6,6 @@ https://github.com/liwm29
 https://www.zhihu.com/column/c_1234535335494545408
 ## Blog Posts
 ```go
-./README.md
 ./[alg] sort.md
 ./[arch] design pattern.md
 ./[cache] base concepts.md
@@ -26,12 +25,15 @@ https://www.zhihu.com/column/c_1234535335494545408
 ./[Go] standard package layout.md
 ./[Go] user thread.md
 ./[HTTP] Content-Type.md
+./[interview] ByteDance&Tencent.md
+./[interview] 杂.md
 ./[linux] bg run linux.md
 ./[lock-free] atomic.md
 ./[other] everyDay.md
-./[other] ready for面试.md
-./[rpc] rpcx.md
+./[other] term.md
 ./[rpc] grpc.md
+./[rpc] rpcx.md
+./[sys] inotify.md
 ./[vue] everything.md
 ./[vue] import-export.md
 ./可交互动态终端/1. eventDistributionSystem.md
@@ -52,4 +54,12 @@ https://www.zhihu.com/column/c_1234535335494545408
 ./[Go] standard package layout.md
 ./[rpc] rpcx.md
 ./[lock-free] atomic.md
+```
+
+## 2021/03/16
+```go
+./[other] term.md
+./[sys] inotify.md
+./[interview] ByteDance&Tencent.md
+
 ```
