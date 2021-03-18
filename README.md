@@ -9,6 +9,7 @@ https://www.zhihu.com/column/c_1234535335494545408
 ./[alg] sort.md
 ./[arch] design pattern.md
 ./[cache] base concepts.md
+./[concurrency] promise&future.md
 ./[DB] b-tree.md
 ./[DB] rule.md
 ./[DB] sql spec.md
