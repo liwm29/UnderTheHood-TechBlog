@@ -15,6 +15,7 @@ https://www.zhihu.com/column/c_1234535335494545408
 ./[DB] sql spec.md
 ./[deploy] server deploy.md
 ./[Go] concurrentMap.md
+./[Go] errorx.md
 ./[Go] escape analysis.md
 ./[Go] GC.md
 ./[Go] monkey patch.md
@@ -48,6 +49,7 @@ https://www.zhihu.com/column/c_1234535335494545408
 - [x] [Go] mutex 普通模式,饥饿模式
 - [ ] [arch] 设计模式(未完成)
 - [ ] [Go] radix-tree
+- [ ] [DB] gap锁,next-lock锁
 
 <!-- ## Recommend
 
