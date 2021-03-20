@@ -57,7 +57,7 @@ b := a[low : high : max]
 但我想补充一下:
 
 ```go
-0 <= low <= len(a) <= high <= max <= cap(a)
+low和high都可以 >=len(a),只要小于cap(a),都是合法的
 ```
 
 新切片:
