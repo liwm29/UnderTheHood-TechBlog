@@ -37,7 +37,7 @@ F-->|"while (1)"| E
 
 > 这种方法应该会触发所谓的__"惊群现象"__,在linux2.6后,如果是多进程调用sockfd.accept(),则惊群被解决
 >
-> 如果是使用epoll_wait()监听sockfd,则仍然存在惊群问题
+> 如果是使用epoll_wait()监听sockfd,则仍然存在惊群问题,其原因很明显,因为只是在监听文件描述符,内核没权利指定到底哪个线程epoll_wait成功,而accept()解决惊群则是因为将accept设计成了某种意义上的原子指令
 >
 > 解决方法是对多个线程,任何时刻都只让一个线程去epoll_wait sockfd
 
@@ -50,6 +50,29 @@ F-->|pthread|G[threadRoutine]-->aa[accept]-->|connfd|O["dowork(){read/write conn
 F-->|pthread|H[threadRoutine]-->aaa[accept]-->|connfd|Oo["dowork(){read/write connfd}"]-->|"while (1)"|aaa
 F-->|pthread|I[threadRoutine]-->aaaa[accept]-->|connfd|Ooo["dowork(){read/write connfd}"]-->|"while (1)"|aaaa
 ```
+
+一个现代的多线程服务器,使用了SO_REUSEPORT来达到多个普通的sockfd绑定到同一个port,这样的好处是内核帮你实现了负载均衡,由于是不同的sockfd,所以即使使用epoll_wait,也只会有一个sockfd被唤醒
+
+```mermaid
+graph LR;
+x[pthread_create]-->A
+xa[pthread_create]-->Aa
+xaa[pthread_create]-->Aaa
+A["socket()"]-->B(sockfd);
+Aa["socket()"]-->Ba(sockfd);
+Aaa["socket()"]-->Baa(sockfd);
+B-->|"setsockopt(so_reuseport)"| C[bind]
+Ba-->|"setsockopt(so_reuseport)"| Ca[bind]
+Baa-->|"setsockopt(so_reuseport)"| Caa[bind]
+C-->D[listen]
+Ca-->Da[listen]
+Caa-->Daa[listen]
+D-->aa[accept]-->|connfd|O["dowork(){read/write connfd}"]-->|"while (1)"|aa
+Da-->aaa[accept]-->|connfd|Oo["dowork(){read/write connfd}"]-->|"while (1)"|aaa
+Daa-->aaaa[accept]-->|connfd|Ooo["dowork(){read/write connfd}"]-->|"while (1)"|aaaa
+```
+
+
 
 ## SO_REUSEPORT&SO_REUSEADDR
 
@@ -121,4 +144,41 @@ ss-->sss["net.Listener"]
 
 - `listenerBacklogMaxSize`
   - `fd, err := os.Open("/proc/sys/net/core/somaxconn") 默认最大128`
+
+### 非阻塞io
+
+文件描述符应该被设置成非阻塞,如果你通过epoll等进行io复用,可以通过fcntl设置
+
+`fcntl(fd, F_SETFL, O_NONBLOCK);`
+
+## 高级封装
+
+import "golang.org/x/sys/unix"
+
+直接使用syscall可能比较复杂繁琐,golang.org实现了一个类似c语言的封装,api和c语言的接口基本一致
+
+```go
+unix.Socket(domain int, typ int, proto int)
+unix.SetsockoptInt(fd int, level int, opt int, value int)
+unix.Bind(fd int, sa unix.Sockaddr)
+unix.Listen(s int, n int)
+unix.Accept(fd int)
+```
+
+我们之前说过将fd转换到net.Listener的方法,这里也同样适用
+
+
+
+## 减少内核态切换拷贝开销
+
+如果是UDP类型通信,每调用一次recvmsg,都会触发内核态缓冲区到用户态缓冲区的数据拷贝,并且只会拷贝一个数据包,为了减少次数,我们期望一次接受多个UDP包,linux提供了recvmmsg,即recv multiple msg, 一次性接受多个包.
+
+go中可以自己封装syscall(这里的6,指的是后面的参数个数)
+
+```go
+func (rw *ReaderWriter) read() (int, error) {
+ 	n, _, err := unix.Syscall6(unix.SYS_RECVMMSG, uintptr(rw.fd),uintptr(unsafe.Pointer(&rw.msgs[0])), uintptr(len(rw.msgs)), unix.MSG_WAITFORONE, 0, 0)
+    return int(n),err
+}
+```
 
