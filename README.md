@@ -44,7 +44,6 @@ drwxrwxrwx 1 liwm29 root   4096 Mar 16 00:19 '[cli] 可交互动态终端'
 -rwxrwxrwx 1 liwm29 root   3465 Mar 13 00:00 '[Go] escape analysis.md'
 -rwxrwxrwx 1 liwm29 root   2472 Mar 13 00:00 '[DB] rule.md'
 -rwxrwxrwx 1 liwm29 root   1886 Mar 12 23:59 '[vue] import-export.md'
--rwxrwxrwx 1 liwm29 root 151439 Mar 11 16:36  事件分发系统eds.png
 ```
 ## TODO
 
@@ -58,4 +57,7 @@ drwxrwxrwx 1 liwm29 root   4096 Mar 16 00:19 '[cli] 可交互动态终端'
 - [x] [Go] [如何在Go中实现百万级UDP通信](https://mp.weixin.qq.com/s/BuZwjRNwuKx19PU6E95Oeg)
 - [ ] [Go] [im服务器](https://mp.weixin.qq.com/s/WxB9fH1I8CJgfcuVGtzlQQ)
 - [ ] [linux] eBPF
+- [ ] [linux/sys] 虚拟内存,交换区,结合/proc/meminfo或top的swap字段
+- [ ] [sys] 什么是hypervisor
+- [ ] [sys] tcmalloc与内存池,ref:[s](https://www.zhihu.com/question/25527491/answer/56571062)
 
