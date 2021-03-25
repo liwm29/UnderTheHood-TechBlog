@@ -4,6 +4,14 @@ taobao system activity reporter
 
 该工具本质是在读取linux系统/proc目录下的一些计数器文件,本片文章来介绍这些文件,及其内部包含的信息
 
+关于此目录下的文件信息,
+
+可直接看linux官方文档:https://man7.org/linux/man-pages/man5/procfs.5.html
+
+也可关注tsar给的文档: https://github.com/alibaba/tsar/blob/master/info.md
+
+由于每个文件是非常verbose的,如果你只想关注更重要的那些字段,你可以看看top命令打印了哪些字段
+
 ## CPU
 
 ### coreInfo
@@ -121,30 +129,40 @@ cpu5 5 0 15 379698 0 0 0 0 0 0
 cpu6 22 0 422 379221 8 0 0 0 0 0
 cpu7 34 0 27 379674 4 0 0 0 0 0
 intr 31441 0 0 0 0 0 0 0 0 0 18 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-ctxt 151746
-btime 1616574037
-processes 403
-procs_running 1
-procs_blocked 0
+ctxt 151746  // 进程上下文切换次数
+btime 1616574037 // 计算机启动时间(Unix时间)
+processes 403 // Number of forks since boot. 如果想看当前的进程数,可以看/proc/loadavg或top
+procs_running 1 // 正在运行的进程数
+procs_blocked 0 // 阻塞数
 softirq 147819 0 41104 0 123 4812 0 20320 42642 0 38818
 ```
 
-| cpu指标    | 含义                              |
-| ---------- | --------------------------------- |
-| user       | 用户态时间(一般/高优先级,nice<=0) |
-| nice       | 用户态时间(低优先级，nice>0)      |
-| system     | 内核态时间                        |
-| idle       | 空闲时间                          |
-| iowait     | I/O等待时间                       |
-| irq        | 硬中断                            |
-| softirq    | 软中断                            |
-| steal      | 被盗时间                          |
-| guest      | 来宾时间                          |
-| guest_nice | nice来宾时间                      |
+| cpu指标    | 含义                                                         |
+| ---------- | ------------------------------------------------------------ |
+| user       | 用户态时间(一般/高优先级,nice<=0)                            |
+| nice       | 用户态时间(低优先级，nice>0)                                 |
+| system     | 内核态时间                                                   |
+| idle       | 空闲时间                                                     |
+| iowait     | I/O等待时间                                                  |
+| irq        | 硬中断                                                       |
+| softirq    | 软中断                                                       |
+| steal      | 被盗时间,Steal time is the percentage of time a virtual CPU waits for a real CPU  while the hypervisor is servicing another virtual processor. |
+| guest      | 来宾时间                                                     |
+| guest_nice | nice来宾时间                                                 |
 
 > 单位是jiffies , 1 jiffies = 0.01s = 10ms
 >
 > 统计cpu利用率: 总时间就是它们的和
+
+### top
+
+在top命令的第三行,即打印出了全局的cpu利用率
+
+```go
+%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+```
+
+### 进程
 
 如果想看某个进程的统计信息,一是strace -p [pid],二就是直接看统计文件
 
@@ -152,3 +170,124 @@ softirq 147819 0 41104 0 123 4812 0 20320 42642 0 38818
 
 
 
+## Memory
+
+/rpoc/meminfo
+
+```go
+MemTotal:        6399360 kB // 总共可用空间,由physical - reserved bits - kernel binary code
+MemFree:         6285756 kB // LowFree+HighFree.
+MemAvailable:    6181148 kB // 在不换页的情况下,一个新进程可以使用多少内存
+Buffers:            7140 kB // 尚未被写回硬盘的块
+Cached:            21828 kB // page cache,not include wapcached
+SwapCached:            0 kB // 和swapfile有关
+Active:            19984 kB // 
+Inactive:          11220 kB
+Active(anon):       2352 kB
+Inactive(anon):        8 kB
+Active(file):      17632 kB
+Inactive(file):    11212 kB
+Unevictable:           0 kB
+Mlocked:               0 kB
+SwapTotal:       2097152 kB
+SwapFree:        2097152 kB
+Dirty:                76 kB
+Writeback:             0 kB
+AnonPages:          2228 kB
+Mapped:             4000 kB
+Shmem:                68 kB
+Slab:              26720 kB
+SReclaimable:      12924 kB
+SUnreclaim:        13796 kB
+KernelStack:        1892 kB
+PageTables:          448 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:     5296832 kB
+Committed_AS:       8048 kB
+VmallocTotal:   34359738367 kB
+VmallocUsed:           0 kB
+VmallocChunk:          0 kB
+Percpu:             1888 kB
+AnonHugePages:         0 kB
+ShmemHugePages:        0 kB
+ShmemPmdMapped:        0 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+Hugetlb:               0 kB
+DirectMap4k:       17408 kB
+DirectMap2M:     2398208 kB
+DirectMap1G:     5242880 kB
+```
+
+```
+util = (total - free - buff - cache) / total * 100%
+```
+
+在top的第四/五行:
+
+```go
+KiB Mem :  6399360 total,  6276944 free,    75224 used,    47192 buff 
+KiB Swap:  2097152 total,  2097152 free,        0 used.  6175056 avai
+```
+
+
+
+## LoadAvg
+
+/proc/loadavg
+
+```go
+0.00 0.00 0.00 1/110 52
+```
+
+```
+ The first three fields in this file are load average
+              figures giving the number of jobs in the run queue (state
+              R) or waiting for disk I/O (state D) averaged over 1, 5,
+              and 15 minutes.  They are the same as the load average
+              numbers given by uptime(1) and other programs.  The fourth
+              field consists of two numbers separated by a slash (/).
+              The first of these is the number of currently runnable
+              kernel scheduling entities (processes, threads).  The
+              value after the slash is the number of kernel scheduling
+              entities that currently exist on the system.  The fifth
+              field is the PID of the process that was most recently
+              created on the system.
+```
+
+## Trafic
+
+/proc/net/dev
+
+```go
+Inter-|   Receive                                                |  Transmit
+ face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
+  eth0:    2234      22    0    0    0     0          0        21     1266      17    0    0    0     0       0          0
+    lo:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0
+dummy0:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0
+ bond0:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0
+  sit0:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0
+```
+
+## TCP/UDP/ICMP
+
+/proc/net/snmp
+
+## diskIO
+
+/proc/diskstats
+
+
+
+
+
+## other
+
+更多详细的可以直接看linux官方文档和tsar
+
+注意一般官方文档的释义可能也比较简略,这时自己再搜索一下基本就ok了
