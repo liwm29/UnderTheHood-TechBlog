@@ -59,5 +59,6 @@ drwxrwxrwx 1 liwm29 root   4096 Mar 16 00:19 '[cli] 可交互动态终端'
 - [ ] [linux] eBPF
 - [ ] [linux/sys] 虚拟内存,交换区,结合/proc/meminfo或top的swap字段
 - [ ] [sys] 什么是hypervisor
-- [ ] [sys] tcmalloc与内存池,ref:[s](https://www.zhihu.com/question/25527491/answer/56571062)
+- [ ] [sys] tcmalloc与内存池,ref:[s ](https://www.zhihu.com/question/25527491/answer/56571062) [b](https://zhuanlan.zhihu.com/p/29216091)
+- [ ] [Go] 了解go的plan9汇编
 

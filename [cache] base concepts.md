@@ -4,7 +4,7 @@
 
 因此,类似硬件层面的缓存,我们在应用层也会使用in-memory cache
 
->  通常,我们使用`redis`,或`mongoDB`,`memcache`等
+>  通常,我们使用`redis`,或`mongoDB`,`memcached`等
 
 缓存虽好,但也面临着一些问题,比如缓存穿透,缓存击穿,缓存雪崩
 
