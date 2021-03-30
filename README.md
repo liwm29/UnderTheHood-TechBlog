@@ -1,4 +1,11 @@
+# Migrate
+
+redirect to https://liwm29.github.io/
+
+本博客不再更新,已全部迁移到[here](https://liwm29.github.io/)
+
 # Hi there
+
 记录技术成长,这是我的博客
 ## About me
 https://github.com/liwm29
@@ -52,6 +59,7 @@ drwxrwxrwx 1 liwm29 root   4096 Mar 16 00:19 '[cli] 可交互动态终端'
 - [x] [Go] mutex 普通模式,饥饿模式
 - [ ] [arch] 设计模式(未完成)
 - [ ] [Go] radix-tree
+- [ ] [Go]netaddr
 - [ ] [DB] gap锁,next-lock锁
 - [ ] [Go] rendora 客户端渲染(正常的前后端分离向客户提供服务)和服务端渲染(为了搜索引擎seo)分开
 - [x] [Go] [如何在Go中实现百万级UDP通信](https://mp.weixin.qq.com/s/BuZwjRNwuKx19PU6E95Oeg)
