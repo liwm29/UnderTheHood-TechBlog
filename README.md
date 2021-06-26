@@ -1,14 +1,14 @@
 # Migrate
 
-redirect to https://liwm29.github.io/
+redirect to https://wymli.github.io/
 
-本博客不再更新,已全部迁移到[here](https://liwm29.github.io/)
+本博客不再更新,已全部[迁移](https://wymli.github.io/)
 
 # Hi there
 
-记录技术成长,这是我的博客
+记录技术成长
 ## About me
-https://github.com/liwm29
+https://github.com/wymli
 ## Blog Posts
 ```go
 -rwxrwxrwx 1 liwm29 root   7829 Mar 23 13:50 '[data-structure] skip-list.md'
